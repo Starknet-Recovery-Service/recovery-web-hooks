@@ -6,7 +6,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 // WebSocket initialization
-const webSocketsServerPort = 3009;
 const app = express();
 const server = http.createServer(app);
 const wsServer = new webSocketServer({
@@ -29,6 +28,7 @@ wsServer.on("request", function (request) {
   // rewrite this part to accept only the requests from allowed origin
   const connection = request.accept(null, request.origin);
   clients[userID] = connection;
+  clients[userID].send("hello");
 
   connection.on("message", function (message) {
     if (message.type === "utf8") {
@@ -39,7 +39,7 @@ wsServer.on("request", function (request) {
 });
 
 // Initialize express and define a port
-const PORT = process.env.PORT || 3000;
+const PORT = 3009;
 
 // Tell express to use body-parser's JSON parsing
 app.use(bodyParser.json());
@@ -55,9 +55,12 @@ app.post("/callFossil", (req, res) => {
   console.log(req.body); // Call your action on the request here
 
   // TODO: call the fossil api
+  res.send("hi");
 
   res.status(200).end(); // Responding is important
 });
 
 // Start express on the defined port
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, async () => {
+  console.log(`🚀 Websocket running on port ${PORT}`);
+});
