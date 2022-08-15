@@ -54,11 +54,22 @@ app.post("/webhook", (req, res) => {
   res.status(200).end(); // Responding is important
 });
 
+app.get("/", (req, res) => {
+  console.log(req.body);
+  res.send("hello world!")
+  // TODO: send message back to websocket
+
+  res.status(200).end(); // Responding is important
+});
+
 app.post("/callFossil", (req, res) => {
   console.log(req.body); // Call your action on the request here
 
   // TODO: call the fossil api
   res.send("hi");
+
+  {url: "", method: "POST", body: req.body}
+
   const request1 = {
     originChain: "ethereum",
     destinationChain: "starknet",
