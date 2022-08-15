@@ -59,9 +59,43 @@ app.post("/callFossil", (req, res) => {
 
   // TODO: call the fossil api
   res.send("hi");
+  const request1 = {
+    originChain: "ethereum",
+    destinationChain: "starknet",
+    block: req.body.blockNumber,
+    useNonce: true,
+    webhook: {},
+  };
+  const request2 = {
+    originChain: "ethereum",
+    destinationChain: "starknet",
+    block: req.body.blockNumber - req.body.duration,
+    useNonce: true,
+    webhook: {},
+  };
+
+  console.log(request2);
+
   axios
-    .post("", {})
-    .then((result) => {})
+    .post(
+      "https://d9b8-2001-8a0-6a40-7200-e1d2-36fe-dfd7-838f.eu.ngrok.io",
+      request1
+    )
+    .then((result) => {
+      console.log(result.data);
+    })
+    .then((err) => {
+      console.log(err);
+    });
+
+  axios
+    .post(
+      "https://d9b8-2001-8a0-6a40-7200-e1d2-36fe-dfd7-838f.eu.ngrok.io",
+      request2
+    )
+    .then((result) => {
+      console.log(result.data);
+    })
     .then((err) => {
       console.log(err);
     });
