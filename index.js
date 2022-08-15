@@ -56,7 +56,7 @@ app.post("/webhook", (req, res) => {
 
 app.get("/", (req, res) => {
   console.log(req.body);
-  res.send("hello world!")
+  res.send("hello world!");
   // TODO: send message back to websocket
 
   res.status(200).end(); // Responding is important
@@ -68,21 +68,31 @@ app.post("/callFossil", (req, res) => {
   // TODO: call the fossil api
   res.send("hi");
 
-  {url: "", method: "POST", body: req.body}
-
   const request1 = {
     originChain: "ethereum",
     destinationChain: "starknet",
     block: req.body.blockNumber,
     useNonce: true,
-    webhook: {},
+    webhook: {
+      url: "https://recovery-web-hooks-ifoa37srt-starknet-recovery-service-fe.vercel.app/callFossil",
+      method: "POST",
+      body: req.body,
+    },
   };
+
+  const clone = JSON.parse(JSON.stringify(req.body));
+  clone.blockNumber = clone.blockNumber - clone.duration;
+
   const request2 = {
     originChain: "ethereum",
     destinationChain: "starknet",
     block: req.body.blockNumber - req.body.duration,
     useNonce: true,
-    webhook: {},
+    webhook: {
+      url: "https://recovery-web-hooks-ifoa37srt-starknet-recovery-service-fe.vercel.app/callFossil",
+      method: "POST",
+      body: clone,
+    },
   };
 
   console.log(request2);
